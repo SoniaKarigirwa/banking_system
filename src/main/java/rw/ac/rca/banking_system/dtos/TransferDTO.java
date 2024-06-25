@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Positive;
 import java.util.Objects;
 
 public class TransferDTO {
-    private CustomerDTO sourceAccount;
-    private CustomerDTO targetAccount;
+    private String sourceAccount;
+    private String targetAccount;
     @Positive(message = "Transfer amount must be positive")
     // Prevent fraudulent transfers attempting to abuse currency conversion errors
     @Min(value = 1, message = "Amount must be larger than 1")
@@ -15,19 +15,19 @@ public class TransferDTO {
 
     public TransferDTO(){}
 
-    public CustomerDTO getSourceAccount() {
+    public String getSourceAccount() {
         return sourceAccount;
     }
 
-    public void setSourceAccount(CustomerDTO sourceAccount) {
+    public void setSourceAccount(String sourceAccount) {
         this.sourceAccount = sourceAccount;
     }
 
-    public CustomerDTO getTargetAccount() {
+    public String getTargetAccount() {
         return targetAccount;
     }
 
-    public void setTargetAccount(CustomerDTO targetAccount) {
+    public void setTargetAccount(String targetAccount) {
         this.targetAccount = targetAccount;
     }
 

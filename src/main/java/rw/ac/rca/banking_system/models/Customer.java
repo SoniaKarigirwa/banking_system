@@ -24,8 +24,8 @@ public class Customer {
     private String lastName;
     private String email;
     private String mobile;
-    private Date dob;
+    private String dob;
     private String account;
-    private double balance;
+    private Double balance;
     private LocalDateTime lastUpdateDateTime;
 }

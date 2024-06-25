@@ -20,12 +20,12 @@ public class CustomerDTO {
     @NotBlank(message = "Telephone number is mandatory")
     private String mobile;
     @NotBlank(message = "DOB is mandatory")
-    private Date dob;
+    private String dob;
 
     @NotBlank(message = "Account number is mandatory")
     private String account;
-    @NotBlank(message = "Balance is mandatory")
-    private double balance;
+    @NotNull
+    private Double balance;
 
     @NotNull
     private LocalDateTime lastUpdateTime;
@@ -72,11 +72,11 @@ public class CustomerDTO {
         this.mobile = mobile;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -88,7 +88,7 @@ public class CustomerDTO {
         this.account = account;
     }
 
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
 

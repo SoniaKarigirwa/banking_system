@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
@@ -34,16 +34,21 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping(value = "/customers",
+    @GetMapping(value = "/getAllCustomers")
+    public ResponseEntity<?> getAll(){
+        return new ResponseEntity<>(customerService.listAll(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/checkAccountBalance",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> checkAccountBalance(
             // TODO In the future support searching by card number in addition to account number
             @Valid @RequestBody CustomerDTO customerDTO) {
-        LOGGER.debug("Triggered CustomerController.accountInput");
+        LOGGER.debug("Triggered CustomerController.customerDTO");
 
         // Validate input
-        if (InputValidator.isSearchCriteriaValid(customerDTO)) {
+        if (InputValidator.isCustomerCriteriaValid(customerDTO)) {
             // Attempt to retrieve the account information
             Customer customer = customerService.getCustomer(customerDTO.getAccount());
 
@@ -59,9 +64,7 @@ public class CustomerController {
     }
 
 
-    @PutMapping(value = "/createCustomer",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/createCustomer")
     public ResponseEntity<?> createAccount(@Valid @RequestBody CustomerDTO customerDTO) {
         LOGGER.debug("Triggered CustomerController.createAccountInput");
 

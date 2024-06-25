@@ -21,13 +21,15 @@ public class BankingService {
     private CustomerRepository customerRepository;
     @Autowired
     private BankingRepository bankingRepository;
+    @Autowired
+    private  MailService mailService;
 
     public boolean makeTransfer(TransferDTO transferDTO){
-        String sourceCustomer = transferDTO.getSourceAccount().getAccount();
+        String sourceCustomer = transferDTO.getSourceAccount();
         Optional<Customer> sourceAccount = customerRepository
                 .findByAccount(sourceCustomer);
 
-        String targetCustomer = transferDTO.getTargetAccount().getAccount();
+        String targetCustomer = transferDTO.getTargetAccount();
         Optional<Customer> targetAccount = customerRepository
                 .findByAccount(targetCustomer);
 
@@ -55,7 +57,9 @@ public class BankingService {
         } else if (bankingType == BankingType.SAVING) {
             customer.setBalance((customer.getBalance() + amount));
         }
+        mailService.sendDepositOrWithdrawNotification(customer, amount, bankingType);
         customerRepository.save(customer);
+//        return customer.getBalance();
     }
 
     public boolean isAmountAvailable(double amount, double balance) {

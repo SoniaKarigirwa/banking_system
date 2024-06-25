@@ -27,7 +27,7 @@ import static rw.ac.rca.banking_system.enums.ResponseType.*;
 
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/banking")
 public class BankingController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BankingController.class);
@@ -41,9 +41,10 @@ public class BankingController {
         this.bankingService = bankingService;
     }
 
-    @PostMapping(value = "/transactions",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+//    @PostMapping(value = "/create")
+//
+
+    @PostMapping(value = "/transfer")
     public ResponseEntity<?> makeTransfer(
             @Valid @RequestBody TransferDTO transferDTO) {
         if (InputValidator.isSearchTransactionValid(transferDTO)) {
@@ -55,18 +56,16 @@ public class BankingController {
         }
     }
 
-    @PostMapping(value = "/withdraw",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/withdraw")
     public ResponseEntity<?> withdraw(
             @Valid @RequestBody WithdrawDTO withdrawDTO) {
-        LOGGER.debug("Triggered AccountRestController.withdrawInput");
+        LOGGER.debug("Triggered BankingController.withDrawDTO");
 
-        // Validate input
+//         Validate input
         if (InputValidator.isSearchCriteriaValid(withdrawDTO)) {
-            // Attempt to retrieve the account information
+//             Attempt to retrieve the account information
             Customer customer = customerService.getCustomer(
-                    withdrawDTO.getAccount());
+                    withdrawDTO.getSourceAccount());
 
             // Return the account details, or warn that no account was found for given input
             if (customer == null) {
@@ -84,9 +83,7 @@ public class BankingController {
     }
 
 
-    @PostMapping(value = "/deposit",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/deposit")
     public ResponseEntity<?> deposit(
             @Valid @RequestBody SavingDTO savingDTO) {
         LOGGER.debug("Triggered AccountRestController.depositInput");

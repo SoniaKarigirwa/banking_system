@@ -25,6 +25,11 @@ public class CustomerService {
         return customer.orElse(null);
     }
 
+    public Customer getCustomer(long customerId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        return customer.orElse(null);
+    }
+
     public Customer createCustomer(@Valid CustomerDTO customerDTO) {
         try {
             // Convert CustomerDTO to Customer

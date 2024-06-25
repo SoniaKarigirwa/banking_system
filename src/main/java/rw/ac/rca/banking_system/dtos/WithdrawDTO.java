@@ -1,19 +1,34 @@
 package rw.ac.rca.banking_system.dtos;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
-public class WithdrawDTO extends CustomerDTO{
+@Getter
+@Setter
+public class WithdrawDTO{
 
-    String account;
+    @NotBlank(message = "Account is mandatory")
+    private String sourceAccount;
 
     // Prevent fraudulent transfers attempting to abuse currency conversion errors
     @Positive(message = "Transfer amount must be positive")
     private double amount;
 
-    public WithdrawDTO() {
-        this.account = super.getAccount();
+//    public WithdrawDTO() {
+//        this.account = super.getAccount();
+//    }
+
+
+    public String getSourceAccount() {
+        return sourceAccount;
+    }
+
+    public void setSourceAccount(String sourceAccount) {
+        this.sourceAccount = sourceAccount;
     }
 
     public double getAmount() {
@@ -27,7 +42,7 @@ public class WithdrawDTO extends CustomerDTO{
     @Override
     public String toString() {
         return "CustomerDTO{" +
-                ", accountNumber='" + account + '\'' +
+                ", accountNumber='" + sourceAccount + '\'' +
                 ", amount='" + amount + '\'' +
                 '}';
     }
@@ -37,12 +52,12 @@ public class WithdrawDTO extends CustomerDTO{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WithdrawDTO that = (WithdrawDTO) o;
-        return Objects.equals(account, that.account) &&
+        return Objects.equals(sourceAccount, that.sourceAccount) &&
                 Objects.equals(amount, that.amount);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(account, amount);
+        return Objects.hash(sourceAccount, amount);
     }
 }
