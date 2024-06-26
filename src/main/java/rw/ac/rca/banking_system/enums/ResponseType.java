@@ -11,6 +11,6 @@ public class ResponseType {
     public static final String INVALID_SEARCH_CRITERIA = "The provided account number did not match the expected format";
     public static final String INVALID_TRANSACTION = "Account information is invalid or transaction has been denied for your protection. Please try again.";
     public static final String CREATE_CUSTOMER_FAILED = "Error happened during creating new account";
-    public static final String MESSAGE_PATTERN = "";
+    public static final String ADD_BANKING_FAILED = "Error happened while adding banking info, try again.";
 
 }

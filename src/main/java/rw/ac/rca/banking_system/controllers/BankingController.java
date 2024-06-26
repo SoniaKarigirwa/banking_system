@@ -4,18 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import rw.ac.rca.banking_system.dtos.SavingDTO;
-import rw.ac.rca.banking_system.dtos.TransferDTO;
-import rw.ac.rca.banking_system.dtos.WithdrawDTO;
+import rw.ac.rca.banking_system.dtos.*;
 import rw.ac.rca.banking_system.enums.BankingType;
+import rw.ac.rca.banking_system.enums.ResponseType;
+import rw.ac.rca.banking_system.models.Banking;
 import rw.ac.rca.banking_system.models.Customer;
+import rw.ac.rca.banking_system.repository.CustomerRepository;
 import rw.ac.rca.banking_system.services.BankingService;
 import rw.ac.rca.banking_system.services.CustomerService;
 import rw.ac.rca.banking_system.validaton.InputValidator;
@@ -34,15 +34,39 @@ public class BankingController {
 
     private final BankingService bankingService;
     private final CustomerService customerService;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public BankingController(CustomerService customerService, BankingService bankingService) {
+    public BankingController(CustomerService customerService, BankingService bankingService, CustomerRepository customerRepository) {
         this.customerService = customerService;
         this.bankingService = bankingService;
+        this.customerRepository = customerRepository;
     }
 
-//    @PostMapping(value = "/create")
+//    @PostMapping(value = "/addBanking")
+//    public ResponseEntity<?> createBanking(@Valid @RequestBody BankingDTO bankingDTO) {
+//        LOGGER.debug("Triggered CustomerController.createAccountInput");
 //
+//        // Validate input
+//        if (InputValidator.isBankingCriteriaValid(bankingDTO) && customerRepository.existsByAccount(bankingDTO.getCustomerAccount())) {
+//            // Attempt to retrieve the account information
+//            Banking banking = bankingService.addBanking(bankingDTO);
+//
+//            // Return the account details, or warn that no account was found for given input
+//            if (banking == null) {
+//                return new ResponseEntity<>(ADD_BANKING_FAILED, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(banking, HttpStatus.OK);
+//            }
+//        } else {
+//            return new ResponseEntity<>(ResponseType.INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
+//        }
+//    }
+
+    @GetMapping(value = "/getAllBanking")
+    public ResponseEntity<?> getAll(){
+        return new ResponseEntity<>(bankingService.listAll(), HttpStatus.OK);
+    }
 
     @PostMapping(value = "/transfer")
     public ResponseEntity<?> makeTransfer(
@@ -52,7 +76,7 @@ public class BankingController {
             boolean isComplete = bankingService.makeTransfer(transferDTO);
             return new ResponseEntity<>(isComplete, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(INVALID_TRANSACTION, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

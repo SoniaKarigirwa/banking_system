@@ -32,7 +32,14 @@ public class CustomerService {
 
     public Customer createCustomer(@Valid CustomerDTO customerDTO) {
         try {
-            // Convert CustomerDTO to Customer
+            Optional<Customer> existCustomer = customerRepository.findCustomerByEmail(customerDTO.getEmail());
+            if (existCustomer.isPresent()){
+                throw new RuntimeException("Customer with that email exists");
+            }
+            Optional<Customer> existAccount = customerRepository.findByAccount(customerDTO.getAccount());
+            if (existAccount.isPresent()){
+                throw new RuntimeException("Customer with that account exists");
+            }
             Customer customer = new Customer();
             customer.setFirstName(customerDTO.getFirstName());
             customer.setLastName(customerDTO.getLastName());

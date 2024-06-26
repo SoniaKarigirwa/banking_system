@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import rw.ac.rca.banking_system.enums.BankingType;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
@@ -18,9 +17,8 @@ public class Banking {
     @Id
     @GeneratedValue
     private long id;
-    private double amount;
-    @ManyToOne
-    private Customer customer;
+    private Double amount;
+    private String customerAccount;
 
     @Enumerated(EnumType.STRING)
     private BankingType type;

@@ -66,21 +66,25 @@ public class CustomerController {
 
     @PostMapping(value = "/createCustomer")
     public ResponseEntity<?> createAccount(@Valid @RequestBody CustomerDTO customerDTO) {
-        LOGGER.debug("Triggered CustomerController.createAccountInput");
+        try {
+            LOGGER.debug("Triggered CustomerController.createAccountInput");
 
-        // Validate input
-        if (InputValidator.isCreateCustomerCriteriaValid(customerDTO)) {
-            // Attempt to retrieve the account information
-            Customer customer = customerService.createCustomer(customerDTO);
+            // Validate input
+            if (InputValidator.isCreateCustomerCriteriaValid(customerDTO)) {
+                // Attempt to retrieve the account information
+                Customer customer = customerService.createCustomer(customerDTO);
 
-            // Return the account details, or warn that no account was found for given input
-            if (customer == null) {
-                return new ResponseEntity<>(ResponseType.CREATE_CUSTOMER_FAILED, HttpStatus.OK);
+                // Return the account details, or warn that no account was found for given input
+                if (customer == null) {
+                    return new ResponseEntity<>(ResponseType.CREATE_CUSTOMER_FAILED, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(customer, HttpStatus.OK);
+                }
             } else {
-                return new ResponseEntity<>(customer, HttpStatus.OK);
+                return new ResponseEntity<>(ResponseType.INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
             }
-        } else {
-            return new ResponseEntity<>(ResponseType.INVALID_SEARCH_CRITERIA, HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

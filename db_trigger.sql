@@ -17,7 +17,7 @@ BEGIN
     SELECT CONCAT(first_name, ' ', last_name)
     INTO customer_name
     FROM customer
-    WHERE id = NEW.customer_id;
+    WHERE account = NEW.customer_account;
 
     -- Insert the message into the Message table
     INSERT INTO Message (customer, message, dateTime)

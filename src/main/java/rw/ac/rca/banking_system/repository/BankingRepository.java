@@ -7,5 +7,6 @@ import rw.ac.rca.banking_system.models.Customer;
 import java.util.List;
 
 public interface BankingRepository extends JpaRepository<Banking, Long> {
-    List<Banking> findByCustomer(Customer customer);
+    List<Banking> findByCustomerAccount(String customerAccount);
+
 }
